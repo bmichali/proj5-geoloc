@@ -1,8 +1,6 @@
 
 import flask
-from flask import request
 import config
-import json
 import logging
 
 ###
@@ -48,13 +46,16 @@ def _marker_list():
     grab locations from text file,
     including name, lat and lng
     """
+    app.logger.debug("Marker List")
     locations = open(markers)
     result = []
     for line in locations:
         if line[0] is not "#":
+            app.logger.debug("added: " + line)
             result.append(line.split("|"))
 
     locations.close()
+    app.logger.debug("sent locations")
     return flask.jsonify(result=result)
 
 app.debug = CONFIG.DEBUG

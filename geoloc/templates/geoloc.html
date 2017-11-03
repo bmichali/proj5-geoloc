@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Restraunts of Eugene</title>
+
+    <meta charset=utf-8 />
+   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <!-- Javascript:  JQuery from a content distribution network (CDN) -->
+  <script
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  </script>
+
+
+      <!-- Bootstrap includes javascript and css  (must follow jquery) -->
+  <link rel="stylesheet"
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+   </script>
+
+    <!-- Make the map fill the entire page -->
+    <style>
+    #map { position: absolute; top:0; bottom:0; right:0; left:0; }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div id="map"></div>
+    <script>
+
+    var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
+    var MARKER_LIST = SCRIPT_ROOT + "/_marker_list";
+
+    function initMap(){
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 44.0521, lng: -123.0868}        /* Eugene */
+        });
+
+        /* geocoder */
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+
+        /* starting marker */
+        var start_mark = new google.maps.Marker({
+          position: {lat: 44.0521, lng: -123.0868},
+          map: map,
+        });
+
+        /* clicking brings up address */
+        map.addListener('click', function(e){
+          reverseCode(geocoder, map, infowindow, e.latLng, start_mark);
+        });
+
+        /* draw markers onto the map from txt file */
+        draw_points(map);
+      }
+
+      /* take in lat+lng, and set location of marker with content being address */
+      function reverseCode(geocoder, map, infowindow, latlng, marker){
+        geocoder.geocode({'location': latlng}, function(results, status){
+          if(status == 'OK'){
+            if(results[0]){
+              marker.setPosition(latlng);
+              infowindow.setContent(results[0].formatted_address);
+              infowindow.open(map, marker);
+            }
+          }
+        });
+      }
+
+      function draw_points(map){
+        $.getJSON(MARKER_LIST,
+            function(data){
+                var loc = data.result;
+                console.log("Got a response");
+
+                /* add locations to map */
+                for(item in loc){
+                  var latlng = {
+                    lat: parseFloat(loc[item][1]),
+                    lng: parseFloat(loc[item][2])
+                  };
+
+                  var info = new google.maps.InfoWindow;
+
+                  /* set marker on map */
+                  var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map
+                  });
+
+                  /* set name as content */
+                  info.setContent(loc[item][0]);
+                  info.open(map, marker);
+
+                }
+            }
+        );
+      }
+
+
+
+
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ g.api_token }}&callback=initMap">
+    </script>
+</div>
+</body>
+
+</html>

@@ -1,9 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
 <title>Restraunts of Eugene</title>
-
     <meta charset=utf-8 />
-   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
   <!-- Javascript:  JQuery from a content distribution network (CDN) -->
   <script
@@ -40,7 +39,8 @@
     function initMap(){
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
-          center: {lat: 44.0521, lng: -123.0868}        /* Eugene */
+          /* Center Map on Eugene */
+          center: {lat: 44.0522, lng: -123.0867} 
         });
 
         /* geocoder */
@@ -104,10 +104,6 @@
             }
         );
       }
-
-
-
-
 
     </script>
     <script async defer

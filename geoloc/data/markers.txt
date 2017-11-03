@@ -1,10 +1,10 @@
-
+#
 Toshi's Ramen| 44.043012| -123.090114
-
+#
 Cheba Hut| 44.047883| -123.087584
-
+#
 Level Up Arcade| 44.045759| -123.091727
-
+#
 McMenamins High Street| 44.046139| -123.087901
-
+#
 El Super Burrito| 44.030663| -123.091232

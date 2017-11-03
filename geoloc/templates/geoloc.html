@@ -40,14 +40,11 @@
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 12,
           /* Center Map on Eugene */
-          center: {lat: 44.0522, lng: -123.0867} 
+          center: {lat: 44.0521, lng: -123.0868}
         });
 
-        /* geocoder */
         var geocoder = new google.maps.Geocoder;
         var infowindow = new google.maps.InfoWindow;
-
-        /* starting marker */
         var start_mark = new google.maps.Marker({
           position: {lat: 44.0521, lng: -123.0868},
           map: map,
@@ -88,8 +85,6 @@
                     lng: parseFloat(loc[item][2])
                   };
 
-                  var info = new google.maps.InfoWindow;
-
                   /* set marker on map */
                   var marker = new google.maps.Marker({
                     position: latlng,
@@ -97,7 +92,9 @@
                   });
 
                   /* set name as content */
+                  var info = new google.maps.InfoWindow;
                   info.setContent(loc[item][0]);
+                  console.log("placed: " + loc[item][0]);
                   info.open(map, marker);
 
                 }
